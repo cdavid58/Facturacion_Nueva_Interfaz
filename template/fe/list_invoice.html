@@ -1,0 +1,69 @@
+{% extends '../base.html' %}
+{% block content %}
+<div class="card-box mb-30">
+	<div class="pd-20">
+		<h4 class="text-blue h4">Facturas Electrónicas</h4>
+		<!-- <p class="mb-0">you can find more options <a class="text-primary" href="https://datatables.net/" target="_blank">Click Here</a></p> -->
+	</div>
+	<div class="pb-20">
+		<table class="data-table table stripe hover nowrap">
+			<thead>
+				<tr>
+					<th class="table-plus datatable-nosort">Número</th>
+					<th>Fecha</th>
+					<th>Cliente</th>
+					<th>Estado</th>
+					<th class="datatable-nosort">Acción</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in data %}
+					<tr>
+						<td class="table-plus">{{i.number}}</td>
+						<td>{{i.date}}</td>
+						<td>{{i.client}}</td>
+						<td><span id="state{{i.pk}}">{{i.state}}</span></td>
+						<td>
+							<div class="dropdown">
+								<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+									<i class="dw dw-more"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+									<a class="dropdown-item dian" id="{{i.pk}}" href="javascript:void(0);"><i class="icon-copy dw dw-paper-plane"></i> Dian</a>
+									<a class="dropdown-item" href="{% url 'View_Invoice' %}"><i class="icon-copy dw dw-eye"></i> Ver</a>
+									<a class="dropdown-item" href="javascript:vopid(0);"><i class="dw dw-delete-3"></i> Eliminar</a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-12 mb-30" hidden>
+	<div class="pd-20 card-box text-center height-100-p">
+		<h5 class="pt-20 h5 mb-30">Custom HTML description and buttons</h5>
+		<div class="max-width-200 mx-auto">
+			<button type="button" class="btn mb-20 btn-primary btn-block" id="send_dian">Click me</button>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			$(".dian").on('click',function(){
+				var id = this.id
+				$.ajax({
+					url:'{% url "Send_Dian" %}',
+					data: {'pk':id},
+					success: function(data){
+						$("#send_dian").click()
+						$("#state"+id).text("Procesado Correctamente.")
+					}
+				})
+			})
+		})
+	</script>
+{% endblock %}

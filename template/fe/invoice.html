@@ -1,0 +1,55 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+<div class="invoice-wrap">
+	<div class="invoice-box" style="width: 100% !important;">
+		<h4 class="text-center mb-30 weight-600">FACTURA ELECTRÓNICA</h4>
+		<div class="row pb-30">
+			<div class="col-md-6 col-12">
+				<h5 class="mb-15">ABARROTES LALO</h5>
+				<p class="font-14 mb-5">Fecha de generada: <strong class="weight-600">10 Jan 2018</strong></p>
+				<p class="font-14 mb-5">Invoice No: <strong class="weight-600">4556</strong></p>
+			</div>
+			<div class="col-md-6 col-12 ml-auto">
+				<div class="text-right">
+					<p class="font-14 mb-5">Theriosoft </strong></p>
+					<p class="font-14 mb-5">CRA 40 #49-29</p>
+					<p class="font-14 mb-5">Medellín</p>
+				</div>
+			</div>
+		</div>
+		<table class="data-table table-sm table stripe hover nowrap">
+			<thead>
+				<tr>
+					<th class="table-plus datatable-nosort">Descripción</th>
+					<th>Base</th>
+					<th>Cantidad</th>
+					<th>IVA</th>
+					<th>Val IVA.</th>
+					<th>Desc.</th>
+					<th>Val. Desc.</th>
+					<th>ICO</th>
+					<th>SubTotal</th>
+					<th>Neto</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="table-plus">Harina PAN</td>
+					<td>$3.193,27</td>
+					<td>1</td>
+					<td>19%</td>
+					<td>$606,72</td>
+					<td>0%</td>
+					<td>$0</td>
+					<td>$0</td>
+					<td>$3.193,27</td>
+					<td>$3800</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<br><br>
+			
+{% endblock %}

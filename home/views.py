@@ -29,19 +29,21 @@ def LogOut(request):
 
 
 def Login(request):
+	message = ""
 	if request.method == 'POST':
 		try:
 			_data = request.POST
 			employee = Employee.objects.get(user = t.codificar(str(_data.get('username'))), passwd= t.codificar(str(_data.get('passwd'))))
-			Create_token(request,'name_employee',employee.company.pk)
+			Create_token(request,'nit_com',employee.company.pk)
 			return redirect('List_Invoice_FE')	
 		except Employee.DoesNotExist as e:
 			print(e)
+			message = "USUARIO O CONSTRASEÑA INCORRECTOS"
 		
-	return render(request,'home/login.html')
+	return render(request,'home/login.html',{'message':message})
 
 def Index(request):
-	GetPDF(request,1)
+	# GetPDF(request,1)
 	return render(request,'base.html')
 
 def Forgot_Password(request):

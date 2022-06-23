@@ -9,11 +9,11 @@
 		<table class="data-table table stripe hover nowrap">
 			<thead>
 				<tr>
-					<th class="table-plus datatable-nosort">Número</th>
-					<th>Fecha</th>
-					<th>Cliente</th>
-					<th>Estado</th>
-					<th class="datatable-nosort">Acción</th>
+					<th style="width: 5%;" class="table-plus datatable-nosort">Número</th>
+					<th style="width: 6%;">Fecha</th>
+					<th style="width: 20%;">Cliente</th>
+					<th style="">Estado</th>
+					<th style="width: 5%;" class="datatable-nosort">Acción</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,16 +22,16 @@
 						<td class="table-plus">{{i.number}}</td>
 						<td>{{i.date}}</td>
 						<td>{{i.client}}</td>
-						<td><span id="state{{i.pk}}">{{i.state}}</span></td>
+						<td><span id="state{{i.number}}">{{i.state}}</span></td>
 						<td>
 							<div class="dropdown">
 								<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 									<i class="dw dw-more"></i>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-									<a class="dropdown-item dian" id="{{i.pk}}" href="javascript:void(0);"><i class="icon-copy dw dw-paper-plane"></i> Dian</a>
-									<a class="dropdown-item" href="{% url 'View_Invoice' %}"><i class="icon-copy dw dw-eye"></i> Ver</a>
-									<a class="dropdown-item" href="javascript:vopid(0);"><i class="dw dw-delete-3"></i> Eliminar</a>
+									<a class="dropdown-item dian" id="{{i.number}}" href="javascript:void(0);"><i class="icon-copy dw dw-paper-plane"></i> Dian</a>
+									<a class="dropdown-item" href="{% url 'View_Invoice' i.number %}"><i class="icon-copy dw dw-eye"></i> Ver</a>
+									<a class="dropdown-item" id="{{i.number}}" onclick="DeleteInvoice(this.id);$(this).closest('tr').remove();" href="javascript:void(0);"><i class="dw dw-delete-3"></i> Eliminar</a>
 								</div>
 							</div>
 						</td>
@@ -49,21 +49,76 @@
 		</div>
 	</div>
 </div>
+<div class="col-lg-4 col-md-6 col-sm-12 mb-30" hidden>
+	<div class="pd-20 card-box text-center height-100-p">
+		<h5 class="pt-20 h5 mb-30">Custom HTML description and buttons</h5>
+		<div class="max-width-200 mx-auto">
+			<button type="button" class="btn mb-20 btn-primary btn-block" id="send_dian_error">Click me</button>
+		</div>
+	</div>
+</div>
 {% endblock %}
 {% block script %}
 	<script>
+		function DeleteInvoice(id){
+			var id = id
+			$.ajax({
+				url: "{% url 'DeleteInvoice' %}",
+				data : {'id':id},
+				success:function(data){
+					Push.create('Éxito!', {
+					    body: 'La factura N° '+id+' fue eliminada con éxito',
+					    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+					    timeout: 3000 
+					})
+				},
+				error:function(a,b){
+					Push.create('Éxito!', {
+					    body: 'La factura N° '+id+' no pudo ser eliminada.',
+					    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+					    timeout: 3000 
+					})
+				}
+			})
+		}
 		$(document).ready(function(){
 			$(".dian").on('click',function(){
 				var id = this.id
+				$("#state"+id).text("Enviando factura...")
 				$.ajax({
 					url:'{% url "Send_Dian" %}',
 					data: {'pk':id},
 					success: function(data){
-						$("#send_dian").click()
-						$("#state"+id).text("Procesado Correctamente.")
+						console.log(data)
+						if (data != "Procesado Correctamente."){
+							$("#send_dian_error").click()
+							Push.create('Éxito!', {
+							    body: 'La factura N° '+id+' no fue procesada por la DIAN ya que contiene errores',
+							    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+							    timeout: 5000 
+							})
+						}
+						else{
+							$("#send_dian").click()
+							Push.create('Éxito!', {
+							    body: 'La factura N° '+id+' fue procesada correctamente por la DIAN',
+							    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+							    timeout: 5000 
+							})
+						}
+						$("#state"+id).text(data)
+						
+					},error:function(){
+						alert("Discupa, algo salio mal")
+						Push.create('Éxito!', {
+						    body: 'La factura N° '+id+' fue no fue procesada por la DIAN',
+						    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+						    timeout: 3000 
+						})
 					}
 				})
 			})
 		})
+		
 	</script>
 {% endblock %}

@@ -285,6 +285,17 @@
             )
         });
 
+        $('#send_dian_error').click(function () {
+            swal(
+                {
+                    title: 'Error',
+                    text: 'Disculpe, ocurrio un error en el envio de la factua a la DIAN, por favor correjir.',
+                    type: 'error',
+                    timer: 3000
+                }
+            )
+        });
+
 
     },
         //init

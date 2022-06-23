@@ -6,16 +6,25 @@
 		<h4 class="text-center mb-30 weight-600">FACTURA ELECTRÓNICA</h4>
 		<div class="row pb-30">
 			<div class="col-md-6 col-12">
-				<h5 class="mb-15">ABARROTES LALO</h5>
-				<p class="font-14 mb-5">Fecha de generada: <strong class="weight-600">10 Jan 2018</strong></p>
-				<p class="font-14 mb-5">Invoice No: <strong class="weight-600">4556</strong></p>
+				<h5 class="mb-10">{{data_info.name_client}}</h5>
+				<small>
+					NIT:&nbsp;{{data_info.identification_number_client}}<br>
+					Tel:&nbsp;{{data_info.phone_client}}<br>
+					Email:&nbsp;{{data_info.email_client}}
+				</small>
+				<p class="font-14 mb-5">Fecha de generada: <strong class="weight-600">{{data_info.generated_date}}</strong></p>
+				<p class="font-14 mb-5">Invoice N°: <strong class="weight-600">{{data_info.number_invoice}}</strong></p>
 			</div>
 			<div class="col-md-6 col-12 ml-auto">
 				<div class="text-right">
-					<p class="font-14 mb-5">Theriosoft </strong></p>
+					<p class="font-14 mb-5">Theriosoft </strong></p>	
 					<p class="font-14 mb-5">CRA 40 #49-29</p>
 					<p class="font-14 mb-5">Medellín</p>
+					<p class="font-14 mb-5">Fecha de vencimiento: <strong class="weight-600">{{data_info.payment_due_date}}</strong></p>
+					<p class="font-14 mb-5">Forma de Págo: <strong class="weight-600">{% if data_info.payment_method == '10' %}
+					Efectivo{% else %} Crédito{% endif %}</strong></p>
 				</div>
+				
 			</div>
 		</div>
 		<table class="data-table table-sm table stripe hover nowrap">
@@ -34,18 +43,47 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="table-plus">Harina PAN</td>
-					<td>$3.193,27</td>
-					<td>1</td>
-					<td>19%</td>
-					<td>$606,72</td>
-					<td>0%</td>
-					<td>$0</td>
-					<td>$0</td>
-					<td>$3.193,27</td>
-					<td>$3800</td>
-				</tr>
+				{% for i in invoice %}
+					<tr>
+						<td class="table-plus">{{i.description}}</td>
+						<td>${{i.price_base}}</td>
+						<td>{{i.quanty}}</td>
+						<td>{{i.tax}}%</td>
+						<td>${{i.tax_val}}</td>
+						<td>{{i.discount}}%</td>
+						<td>$0</td>
+						<td>$0</td>
+						<td>$3.193,27</td>
+						<td>$3800</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table><br><br>
+		<table class="table-sm table stripe hover nowrap">
+			<tbody>
+					<tr>
+						<td class="table-plus">
+							<ul>
+								<li><h5>Totales de Impuestos</h5></li><br>
+								<li>IVA 19% = &nbsp;$1.213,44</li>
+								<li>IVA 5% &nbsp;&nbsp;= &nbsp;$0</li>
+								<li>IVA 0% &nbsp;&nbsp;= &nbsp;$0</li>
+							</ul>
+						</td>
+						<td>
+							<div class="row">
+								<ul class="ml-auto">
+									<li style="text-align: right;padding-bottom: 10px;">Neto = $6.386,56</li>
+									<li style="text-align: right;padding-bottom: 10px;">Descuento Factura = $0,00</li>
+									<li style="text-align: right;padding-bottom: 10px;">SubTotal = $6.386,56</li>
+									<li style="text-align: right;padding-bottom: 10px;">Descuento Productos = $0,00</li>
+									<li style="text-align: right;padding-bottom: 10px;">Impuestos = $1.213,44</li>
+									<li style="text-align: right;padding-bottom: 10px;">ICO = $0,00</li>
+									<li style="text-align: right;">Total = $7.600,00</li>
+								</ul>
+							</div>
+						</td>
+					</tr>
 			</tbody>
 		</table>
 	</div>

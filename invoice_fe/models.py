@@ -14,10 +14,6 @@ class Invoice_FE(models.Model):
 	employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
 	company = models.ForeignKey(Company,on_delete=models.CASCADE)
 
-	def __str__(self):
-		return t.decodificar(str(self.number))
-
-
 class Invoice_FE_Details(models.Model):
 	invoice = models.ForeignKey(Invoice_FE,on_delete=models.CASCADE)
 	product = models.TextField()
@@ -30,6 +26,17 @@ class Invoice_FE_Details(models.Model):
 	payment_method = models.TextField()
 	payment_due_date = models.TextField()
 	duration_measure = models.TextField()
+	price = models.TextField(default = 3800)
+	company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
+
+
+	def Base(self):
+		self.price_ = float(t.decodificar(str(self.price)))
+		tax = float(t.decodificar(str(self.tax)))
+		return round(self.price_ / (1 + (tax / 100)),2)
+
+	def Tax_Value(self):
+		return round(self.price_ - self.Base(),2)
 
 
 

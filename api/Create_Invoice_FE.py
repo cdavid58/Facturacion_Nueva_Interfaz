@@ -22,7 +22,7 @@ class Create_Invoice_FE_:
 		).save()
 		for i in self.d:
 			Invoice_FE_Details(
-				invoice = Invoice_FE.objects.filter(number = t.codificar(str(self.i['number']))).last(),
+				invoice = Invoice_FE.objects.get(number = t.codificar(str(self.i['number']))),
 				product = t.codificar(str(i['product'])),
 				quanty  = t.codificar(str(i['quanty'])),
 				discount = t.codificar(str(i['discount'])),
@@ -32,7 +32,9 @@ class Create_Invoice_FE_:
 				stronghold = t.codificar(str(i['stronghold'])),
 				payment_method = t.codificar(str(i['payment_method'])),
 				payment_due_date = t.codificar(str(i['payment_due_date'])),
-				duration_measure = t.codificar(str(i['duration_measure']))
+				duration_measure = t.codificar(str(i['duration_measure'])),
+				price = t.codificar(str(i['price'])),
+				company = Company.objects.get(document_identification=t.codificar(self.i['company']))
 			).save()
 
 		return 'Success'

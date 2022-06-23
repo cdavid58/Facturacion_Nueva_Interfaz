@@ -97,5 +97,22 @@
 	<script src="{% static 'vendors/scripts/script.min.js' %}"></script>
 	<script src="{% static 'vendors/scripts/process.js' %}"></script>
 	<script src="{% static 'vendors/scripts/layout-settings.js' %}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+	<script>
+		// Push.Permission.request();
+		if('{{message}}' != ""){
+			Push.create('Error!', {
+			    body:'{{message}}',
+			    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
+			    timeout: 8000,               // Timeout before notification closes automatically.
+			    vibrate: [100, 100, 100]    // An array of vibration pulses for mobile devices.
+			    // onClick: function() {
+			    //     // Callback for when the notification is clicked. 
+			    //     console.log(this);
+			    // }  
+			});	
+		}
+		
+	</script>
 </body>
 </html>

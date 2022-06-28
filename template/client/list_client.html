@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="min-height-200px">
+	<div class="container pd-0">
+		<div class="pb-20">
+		<table class="data-table table stripe hover nowrap">
+			<thead>
+				<tr>
+					<th style="width: 5%;" class="table-plus datatable-nosort">Número</th>
+					<th style="width: 6%;">Fecha</th>
+					<th style="width: 20%;">Cliente</th>
+					<th style="">Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in clients %}
+					<tr>
+						<td class="table-plus">FE-{{i.number}}</td>
+						<td>{{i.date}}</td>
+						<td>ABARROTES LALO</td>
+						<td><span id="">sin enviar a la dian</span></td>
+						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+
+{% endblock %}

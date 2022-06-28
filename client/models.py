@@ -3,6 +3,7 @@ from data.models import *
 from translator import Translator
 from company.models import Company
 
+
 t = Translator()
 
 class Client(models.Model):

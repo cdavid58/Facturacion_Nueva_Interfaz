@@ -27,14 +27,23 @@ def LogOut(request):
 		del request.session[i]
 	return redirect('/')
 
+def get_client_ip(request): 
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR') 
+	if x_forwarded_for: 
+		ip = x_forwarded_for.split(',')[0] 
+	else: 
+		ip = request.META.get('REMOTE_ADDR') 
+	return ip
 
 def Login(request):
 	message = ""
+	print(get_client_ip(request))
 	if request.method == 'POST':
+
 		try:
 			_data = request.POST
 			employee = Employee.objects.get(user = t.codificar(str(_data.get('username'))), passwd= t.codificar(str(_data.get('passwd'))))
-			Create_token(request,'nit_com',employee.company.pk)
+			Create_token(request,'nit_company',employee.company.pk)
 			return redirect('List_Invoice_FE')	
 		except Employee.DoesNotExist as e:
 			print(e)
@@ -43,8 +52,10 @@ def Login(request):
 	return render(request,'home/login.html',{'message':message})
 
 def Index(request):
-	# GetPDF(request,1)
-	return render(request,'base.html')
+	if 'nit_company' in request.session:
+		GetPDF(request,1)
+		return render(request,'base.html')
+	return render(request,'errors/403.html')
 
 def Forgot_Password(request):
 	if request.is_ajax():
@@ -163,7 +174,7 @@ def Create_PDF_Invoice(request,pk):
 	file = open("template/pdfs/"+name_doc+".html",'w')
 	file.write(html)
 	file.close()
-	path = "./media/company/"+str(900541566)
+	path = "media/company/"+str(900541566)
 	GeneratePDF(name_doc,path)
 	os.remove('template/pdfs/'+name_doc+'.html')
 
@@ -171,7 +182,7 @@ def Create_PDF_Invoice(request,pk):
 def GetPDF(request,pk):
 	company = Company.objects.get(document_identification= t.codificar(str(900541566)))	
 	name_doc = "FES-"+str(company.prefix)+str(pk)
-	path_dir = "/media/company/"+str(900541566)+'/'+name_doc+'.pdf'
+	path_dir = "media/company/"+str(900541566)+'/'+name_doc+'.pdf'
 	if not os.path.exists(path_dir):
 		Create_PDF_Invoice(request,pk)
 	return FileResponse(open(path_dir,'rb'),content_type='application/pdf')

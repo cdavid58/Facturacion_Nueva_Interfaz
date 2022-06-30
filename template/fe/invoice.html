@@ -53,8 +53,8 @@
 						<td>{{i.discount}}%</td>
 						<td>$0</td>
 						<td>$0</td>
-						<td>$3.193,27</td>
-						<td>$3800</td>
+						<td>${{i.subtotal}}</td>
+						<td>${{i.neto}}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -65,21 +65,27 @@
 						<td class="table-plus">
 							<ul>
 								<li><h5>Totales de Impuestos</h5></li><br>
-								<li>IVA 19% = &nbsp;$1.213,44</li>
-								<li>IVA 5% &nbsp;&nbsp;= &nbsp;$0</li>
-								<li>IVA 0% &nbsp;&nbsp;= &nbsp;$0</li>
+								{% if tax_19 != 0 %}
+									<li>IVA 19% = &nbsp;${{tax_19}}</li>
+								{% endif %}
+								{% if tax_5 != 0 %}
+									<li>IVA 5% &nbsp;&nbsp;= &nbsp;${{tax_5}}</li>
+								{% endif %}
+								{% if tax_0 != 0 %}
+									<li>IVA 0% &nbsp;&nbsp;= &nbsp;${{tax_0}}</li>
+								{% endif %}
 							</ul>
 						</td>
 						<td>
 							<div class="row">
 								<ul class="ml-auto">
-									<li style="text-align: right;padding-bottom: 10px;">Neto = $6.386,56</li>
+									<li style="text-align: right;padding-bottom: 10px;">Neto = ${{neto}}</li>
 									<li style="text-align: right;padding-bottom: 10px;">Descuento Factura = $0,00</li>
-									<li style="text-align: right;padding-bottom: 10px;">SubTotal = $6.386,56</li>
+									<li style="text-align: right;padding-bottom: 10px;">SubTotal = ${{total_base}}</li>
 									<li style="text-align: right;padding-bottom: 10px;">Descuento Productos = $0,00</li>
-									<li style="text-align: right;padding-bottom: 10px;">Impuestos = $1.213,44</li>
+									<li style="text-align: right;padding-bottom: 10px;">Impuestos = ${{total_tax_value}}</li>
 									<li style="text-align: right;padding-bottom: 10px;">ICO = $0,00</li>
-									<li style="text-align: right;">Total = $7.600,00</li>
+									<li style="text-align: right;">Total = ${{total_invoice}}</li>
 								</ul>
 							</div>
 						</td>

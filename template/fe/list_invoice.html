@@ -109,7 +109,7 @@
 						$("#state"+id).text(data)
 						
 					},error:function(){
-						alert("Discupa, algo salio mal")
+						alert("Discupa, el servidor no respondio a la solicitud")
 						Push.create('Éxito!', {
 						    body: 'La factura N° '+id+' fue no fue procesada por la DIAN',
 						    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxNR84aC9wO87-4GyiBds9HokqBBTCX49Nyw&usqp=CAU',
@@ -119,6 +119,9 @@
 				})
 			})
 		})
+		plus = 0
+		$(".table-plus").removeClass('sorting_asc').addClass('sorting_desc')
+		console.log(plus)
 		
 	</script>
 {% endblock %}

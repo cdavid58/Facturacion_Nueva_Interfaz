@@ -31,12 +31,15 @@ class Invoice_FE_Details(models.Model):
 
 
 	def Base(self):
-		self.price_ = float(t.decodificar(str(self.price)))
+		price_ = float(t.decodificar(str(self.price)))
 		tax = float(t.decodificar(str(self.tax)))
-		return round(self.price_ / (1 + (tax / 100)),2)
+		return round( (price_ / (1 + (tax / 100))) ,2)
 
 	def Tax_Value(self):
-		return round(self.price_ - self.Base(),2)
+		return round( (float(t.decodificar(str(self.price))) - self.Base()) ,2)
+
+	def Totals(self):
+		return float(t.decodificar(str(self.price))) * float(t.decodificar(str(self.quanty)))
 
 
 

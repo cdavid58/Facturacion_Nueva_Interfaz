@@ -53,5 +53,5 @@ def Create(number):
 
 
 
-for i in range(1001,10000):
+for i in range(100,200):
   Create(i)
